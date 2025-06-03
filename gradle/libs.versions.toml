@@ -1,0 +1,73 @@
+[versions]
+accompanistPermissionsVersion = "0.37.2"
+photoviewV = "2.3.0"
+agp = "8.10.1"
+coilCompose = "3.1.0"
+coilNetworkOkhttp = "3.1.0"
+firebaseAppcheckKtxVersion = "18.0.0"
+firebaseMessagingVersion = "24.1.1"
+googlePlayServicesAuth = "21.3.0"
+kotlin = "2.1.0"
+coreKtx = "1.16.0"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.9.0"
+activityCompose = "1.10.1"
+composeBom = "2025.05.01"
+googleServicesV="4.4.2"
+firebaseAuthKtx = "23.2.1"
+firebaseDatabaseKtx = "21.0.0"
+circleImageV="3.1.0"
+glideV="4.16.0"
+firebaseStorageKtx = "21.0.2"
+uiTextGoogleFontsVersion = "1.8.2"
+volley = "1.2.1"
+googleServices = "4.4.2"
+navigatorCompose = "2.9.0"
+material3Version = "1.3.2"
+iconsExtended = "1.7.8"
+workRuntimeKtxVersion = "2.10.1"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-ui-text-google-fonts = { module = "androidx.compose.ui:ui-text-google-fonts", version.ref = "uiTextGoogleFontsVersion" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtxVersion" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
+firebase-appcheck-ktx = { module = "com.google.firebase:firebase-appcheck-ktx", version.ref = "firebaseAppcheckKtxVersion" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging", version.ref = "firebaseMessagingVersion" }
+google-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissionsVersion" }
+photoView={group="com.github.chrisbanes", name="PhotoView", version.ref= "photoviewV" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref ="material3Version"}
+androidx-icons-extended = { group="androidx.compose.material", name = "material-icons-extended-android", version.ref="iconsExtended"}
+
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
+circleImage={group = "de.hdodenhof",name = "circleimageview", version.ref = "circleImageV"}
+glide={group="com.github.bumptech.glide", name ="glide", version.ref ="glideV"}
+firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
+play-services-auth-v2100 = { module = "com.google.android.gms:play-services-auth", version.ref = "googlePlayServicesAuth" }
+volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
+androidx-navigation-compose = {group="androidx.navigation", name = "navigation-compose",version.ref="navigatorCompose"}
+
+google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+googleService={id="com.google.gms.google-services", version.ref = "googleServicesV"}
+

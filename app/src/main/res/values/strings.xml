@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Chat DocuEmysi</string>
+    <string name="item_perfil">Perfil</string>
+    <string name="item_usuarios">Usuarios</string>
+    <string name="item_chat">Chats</string>
+    <string name="Txt_titulo_edit">Editar Perfil</string>
+    <string name="et_nombres">Nombres</string>
+    <string name="btn_Actualizar">Actualizar</string>
+    <string name="et_email">Email</string>
+    <string name="et_password">Contraseña</string>
+    <string name="tv_recuperar_cuenta">Recuperar cuenta</string>
+    <string name="btn_ingresar">Ingresar</string>
+    <string name="txt_no_tienes_cuenta">¿No tienes cuenta?</string>
+    <string name="tv_registrarme">Registrarme</string>
+    <string name="Txt_olvide_pass">Olvide contraseña</string>
+    <string name="Txt_ingrese_email">Ingrese su email</string>
+    <string name="btr_Enviar">Enviar</string>
+    <string name="opcionEmail">Email</string>
+    <string name="opcionGoogle">Google</string>
+    <string name="txt_registro">Registro</string>
+    <string name="et_R_password">Repetir contraseña</string>
+    <string name="btn_registrar">Registrar</string>
+    <string name="BtnCerrarVisualizador">Cerrar</string>
+    <string name="txt_login">Login</string>
+
+    <string name="Txt_cambiar_pass">Cambiar contraseña</string>
+    <string name="et_pass_actual">Contraseña actual</string>
+    <string name="et_pass_nueva">Nueva Contraseña</string>
+    <string name="et_r_pass_nueva">Repetir Nueva Contraseña</string>
+    <string name="btn_CambiarPassword">Cambiar</string>
+
+    <string name="default_web_client_id">831461540066-a7r61r1v8n35a3a9eu8nh00vulh114u1.apps.googleusercontent.com</string>
+    <string name="profile_image">Imagen de perfil</string>
+    <string name="error_password_mismatch">La contraseña no coincide</string>
+    <string name="olvide_contrasena">Olvide mi contraseña</string>
+
+    <string name="default_notification_channel_id">chat_notifications</string>
+
+</resources>

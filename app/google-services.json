@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "831461540066",
+    "firebase_url": "https://chatdocu-emysi-a7687-default-rtdb.firebaseio.com",
+    "project_id": "chatdocu-emysi-a7687",
+    "storage_bucket": "chatdocu-emysi-a7687.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831461540066:android:df7dfd9d9f62ae12dd9ebb",
+        "android_client_info": {
+          "package_name": "com.example.chatdocuemysi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831461540066-4evid7lmmlk6nvontm18faq8s1spn9v4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chatdocuemysi",
+            "certificate_hash": "22d8c4c0e9323070babadc75ead6e1ddd378df4e"
+          }
+        },
+        {
+          "client_id": "831461540066-a7r61r1v8n35a3a9eu8nh00vulh114u1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANL8pkZ36J6CsrZGyB0dx6xCnblw3l9WM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831461540066-a7r61r1v8n35a3a9eu8nh00vulh114u1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
