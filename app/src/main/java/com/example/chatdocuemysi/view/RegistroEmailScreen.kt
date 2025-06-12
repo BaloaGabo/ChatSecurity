@@ -49,7 +49,15 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 
-// src/main/java/com/example/chatdocuemysi/view/RegistroEmailScreen.kt
+/**
+ * Pantalla de registro de usuario con correo electrónico.
+ * Permite al usuario introducir sus datos (nombre, email, contraseña) y seleccionar una foto de perfil
+ * para crear una nueva cuenta.
+ *
+ * @param navController El [NavController] para gestionar la navegación entre pantallas.
+ * @param viewModel El [RegistroEmailViewModel] que maneja la lógica de negocio y el estado de la pantalla.
+ * @param onBack La acción a ejecutar cuando se presiona el botón de retroceso del sistema.
+ */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun RegistroEmailScreen(
@@ -57,31 +65,35 @@ fun RegistroEmailScreen(
     viewModel: RegistroEmailViewModel = viewModel(),
     onBack: () -> Unit
 ) {
+    // Maneja la acción de retroceso del sistema.
     BackHandler(onBack = onBack)
-    // Recogemos estado
-    val email          by viewModel.email.collectAsState()
-    val password       by viewModel.password.collectAsState()
-    val repeatPassword by viewModel.repeatPassword.collectAsState()
-    val displayName    by viewModel.displayName.collectAsState()
-    val imageUri       by viewModel.imageUri.collectAsState()
-    val context        = LocalContext.current
-    var error by remember { mutableStateOf<String?>(null) }
 
-    // Permisos y launcher
+    // Recolectamos los estados del ViewModel para que la UI se actualice automáticamente.
+    val email by viewModel.email.collectAsState()
+    val password by viewModel.password.collectAsState()
+    val repeatPassword by viewModel.repeatPassword.collectAsState()
+    val displayName by viewModel.displayName.collectAsState()
+    val imageUri by viewModel.imageUri.collectAsState()
+    val context = LocalContext.current // Obtenemos el contexto actual para mostrar Toasts.
+    var error by remember { mutableStateOf<String?>(null) } // Estado para mostrar mensajes de error en la UI.
+
+    // Configuración de permisos y del launcher para seleccionar imágenes de la galería.
     val readPerm = rememberPermissionState(
+        // Diferenciamos el permiso según la versión de Android.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            Manifest.permission.READ_MEDIA_IMAGES
-        else Manifest.permission.READ_EXTERNAL_STORAGE
+            Manifest.permission.READ_MEDIA_IMAGES // Android 13+
+        else Manifest.permission.READ_EXTERNAL_STORAGE // Versiones anteriores
     )
     val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri: Uri? -> uri?.let { viewModel.actualizarImageUri(it) } }
+        contract = ActivityResultContracts.GetContent() // Contrato para obtener contenido (en este caso, imágenes).
+    ) { uri: Uri? -> uri?.let { viewModel.actualizarImageUri(it) } } // Si se selecciona una URI, la actualizamos en el ViewModel.
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Registro") },
+                title = { Text("Registro") }, // Título de la barra superior.
                 navigationIcon = {
+                    // Botón para retroceder en la navegación.
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Atrás")
                     }
@@ -92,23 +104,25 @@ fun RegistroEmailScreen(
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(padding)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+                .padding(padding) // Aplicamos el padding proporcionado por el Scaffold.
+                .padding(16.dp), // Padding adicional para el contenido de la columna.
+            horizontalAlignment = Alignment.CenterHorizontally, // Centra los elementos horizontalmente.
+            verticalArrangement = Arrangement.spacedBy(12.dp) // Espacio vertical entre los elementos.
         ) {
-            // Foto de perfil
+            // Sección para la foto de perfil.
             Box(modifier = Modifier.size(100.dp)) {
                 if (imageUri != null) {
+                    // Si hay una URI de imagen seleccionada, la mostramos.
                     AsyncImage(
                         model = imageUri,
                         contentDescription = null,
                         modifier = Modifier
                             .size(100.dp)
-                            .clip(CircleShape),
-                        contentScale = ContentScale.Crop
+                            .clip(CircleShape), // Recortamos la imagen en forma de círculo.
+                        contentScale = ContentScale.Crop // Escala la imagen para rellenar el espacio.
                     )
                 } else {
+                    // Si no hay imagen seleccionada, mostramos un icono de cámara y lo hacemos clickeable.
                     Icon(
                         Icons.Default.CameraAlt,
                         contentDescription = null,
@@ -116,6 +130,7 @@ fun RegistroEmailScreen(
                             .size(100.dp)
                             .clip(CircleShape)
                             .clickable {
+                                // Al hacer clic, verificamos los permisos y lanzamos el selector de imágenes.
                                 if (readPerm.status.isGranted) launcher.launch("image/*")
                                 else readPerm.launchPermissionRequest()
                             }
@@ -123,18 +138,21 @@ fun RegistroEmailScreen(
                 }
             }
 
+            // Campo de texto para el nombre completo.
             OutlinedTextField(
                 value = displayName,
                 onValueChange = viewModel::actualizarDisplayName,
                 label = { Text("Nombre completo") },
                 modifier = Modifier.fillMaxWidth()
             )
+            // Campo de texto para el email.
             OutlinedTextField(
                 value = email,
                 onValueChange = viewModel::actualizarEmail,
                 label = { Text("Email") },
                 modifier = Modifier.fillMaxWidth()
             )
+            // Campo de texto para la contraseña (oculta el texto).
             OutlinedTextField(
                 value = password,
                 onValueChange = viewModel::actualizarPassword,
@@ -142,6 +160,7 @@ fun RegistroEmailScreen(
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation()
             )
+            // Campo de texto para repetir la contraseña (oculta el texto).
             OutlinedTextField(
                 value = repeatPassword,
                 onValueChange = viewModel::actualizarRepeatPassword,
@@ -150,31 +169,37 @@ fun RegistroEmailScreen(
                 visualTransformation = PasswordVisualTransformation()
             )
 
+            // Si hay un error, lo mostramos con un color de error.
             error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
 
+            // Botón para registrar al usuario.
             Button(
                 onClick = {
+                    // Verificamos que las contraseñas coincidan antes de proceder.
                     if (password != repeatPassword) {
                         error = "Las contraseñas no coinciden"
                         return@Button
                     }
-                    error = null
+                    error = null // Limpiamos errores anteriores si las contraseñas coinciden.
                     viewModel.registrarUsuario { ok, msg ->
                         if (ok) {
+                            // Si el registro es exitoso, mostramos un Toast y navegamos a la lista de chats.
                             Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
-                            // tras registro vamos a lista de chats
                             navController.navigate("chatList") {
+                                // Limpiamos el back stack para que el usuario no pueda volver a la pantalla de login/registro.
                                 popUpTo("opcionesLogin") { inclusive = true }
                             }
                         } else {
+                            // Si el registro falla, mostramos el mensaje de error.
                             error = msg
                         }
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
+                // El botón solo está habilitado si todos los campos requeridos no están vacíos.
                 enabled = displayName.isNotBlank() && email.isNotBlank() && password.isNotBlank()
             ) {
-                Text("Registrarse")
+                Text("Registrarse") // Texto del botón.
             }
         }
     }

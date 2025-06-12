@@ -1,4 +1,3 @@
-// ui/menu/TopBarMenu.kt
 package com.example.chatdocuemysi.ui.menu
 
 import android.widget.Toast
@@ -10,13 +9,20 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.firebase.auth.FirebaseAuth
 
+/**
+ * Composable que define la barra superior de la aplicación.
+ * Muestra diferentes opciones según el estado de autenticación del usuario.
+ *
+ * @param navController El controlador de navegación para manejar las acciones de navegación.
+ * @param isUserAuthenticated Booleano que indica si el usuario está autenticado.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarMenu(
     navController: NavHostController,
     isUserAuthenticated: Boolean
 ) {
-    // si NO está autenticado, solo pintamos la app-bar con el título
+    // Si el usuario NO está autenticado, solo muestra una barra superior con el título de la app.
     if (!isUserAuthenticated) {
         CenterAlignedTopAppBar(
             title = { Text("Chat DocuEmysi") },
@@ -28,12 +34,14 @@ fun TopBarMenu(
         return
     }
 
-    // a partir de aquí sabemos que sí está autenticado
+    // A partir de aquí, el usuario está autenticado.
     val firebaseAuth = FirebaseAuth.getInstance()
+    // Estado para controlar la expansión del menú desplegable.
     var expanded by remember { mutableStateOf(false) }
 
-    // ocultar el menú de ⋮ en las pantallas de chat
+    // Obtiene la ruta actual para decidir si ocultar el menú de opciones.
     val route = navController.currentBackStackEntryAsState().value?.destination?.route
+    // Oculta el menú de tres puntos (⋮) en las pantallas de chat individuales o grupales.
     if (route?.startsWith("privateChat/") == true || route?.startsWith("groupChat/") == true) {
         CenterAlignedTopAppBar(
             title = { Text("Chat DocuEmysi") },
@@ -44,17 +52,20 @@ fun TopBarMenu(
         )
         return
     }
-
+    // Barra superior con el menú de opciones para usuarios autenticados (cuando no están en un chat).
     CenterAlignedTopAppBar(
         title = { Text("Chat DocuEmysi") },
         actions = {
+            // Icono de tres puntos para abrir el menú.
             IconButton(onClick = { expanded = true }) {
                 Icon(Icons.Default.MoreVert, contentDescription = "Abrir menú")
             }
+            // Menú desplegable.
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
+                // Opción para navegar a la pantalla de edición de información.
                 DropdownMenuItem(
                     text = { Text("Editar Información") },
                     onClick = {
@@ -62,6 +73,7 @@ fun TopBarMenu(
                         navController.navigate("editarInformacion")
                     }
                 )
+                // Opción para navegar a la lista de chats.
                 DropdownMenuItem(
                     text = { Text("Lista de Chats") },
                     onClick = {
@@ -69,11 +81,13 @@ fun TopBarMenu(
                         navController.navigate("chatList")
                     }
                 )
+                // Opción para cerrar sesión.
                 DropdownMenuItem(
                     text = { Text("Cerrar sesión") },
                     onClick = {
                         expanded = false
-                        firebaseAuth.signOut()
+                        firebaseAuth.signOut() // Cierra la sesión de Firebase.
+                        // Muestra un Toast de confirmación.
                         Toast.makeText(navController.context, "Sesión cerrada", Toast.LENGTH_SHORT).show()
                     }
                 )

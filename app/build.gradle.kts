@@ -60,30 +60,33 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material3)// Componentes de Material Design 3 para Compose
 
-    implementation(libs.firebase.auth.ktx)
-    implementation(libs.firebase.database.ktx)
-    implementation(libs.firebase.storage.ktx)
-    implementation(libs.firebase.messaging)
-    implementation(libs.firebase.appcheck.ktx)
+    // Dependencias de Firebase
+    implementation(libs.firebase.auth.ktx) // Autenticación de Firebase (Kotlin)
+    implementation(libs.firebase.database.ktx) // Realtime Database de Firebase (Kotlin)
+    implementation(libs.firebase.storage.ktx) // Cloud Storage de Firebase (Kotlin)
+    implementation(libs.firebase.messaging) // Firebase Cloud Messaging (FCM) para notificaciones
+    implementation(libs.firebase.appcheck.ktx) // App Check para proteger el backend de Firebase
 
-    implementation(libs.play.services.auth.v2100)
-    implementation(libs.androidx.work.runtime.ktx)
+    // Autenticación de Google y WorkManager
+    implementation(libs.play.services.auth.v2100) // Servicios de Google Play para autenticación
+    implementation(libs.androidx.work.runtime.ktx) // WorkManager para tareas en segundo plano (Kotlin)
 
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.google.accompanist.permissions)
+    // Navegación y Permisos
+    implementation(libs.androidx.navigation.compose) // Navegación en Jetpack Compose
+    implementation(libs.google.accompanist.permissions) // Librería de Accompanist para gestionar permisos
 
-    implementation(libs.circleImage)
-    implementation(libs.glide)
-    implementation(libs.coil.compose)
-    implementation(libs.coil.network.okhttp)
-    implementation (libs.photoView)
-    implementation(libs.androidx.icons.extended)
-    implementation (libs.androidx.ui.text.google.fonts)
+    // Librerías de UI y procesamiento de imágenes
+    implementation(libs.circleImage) // Posiblemente para imágenes circulares o avatares
+    implementation(libs.glide) // Librería para carga y caché de imágenes (aunque Coil también está presente, podría haber redundancia o uso específico)
+    implementation(libs.coil.compose) // Carga de imágenes moderna para Compose
+    implementation(libs.coil.network.okhttp) // Integración de Coil con OkHttp para red
+    implementation (libs.photoView) // Librería para zoom y pan en imágenes (visor de fotos)
+    implementation(libs.androidx.icons.extended) // Iconos extendidos de Material Design para Compose
+    implementation (libs.androidx.ui.text.google.fonts) // Integración de fuentes de Google Fonts en Compose
 
-
-    implementation(libs.volley)
+    implementation(libs.volley) // Librería para peticiones HTTP
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

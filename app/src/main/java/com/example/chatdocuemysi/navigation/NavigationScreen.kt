@@ -1,4 +1,3 @@
-// src/main/java/com/example/chatdocuemysi/navigation/NavigationScreen.kt
 package com.example.chatdocuemysi.navigation
 
 import android.app.Activity.RESULT_OK
@@ -41,32 +40,42 @@ import com.example.chatdocuemysi.viewmodel.LoginEmailViewModel
 import com.example.chatdocuemysi.viewmodel.RegistroEmailViewModel
 import com.google.firebase.auth.FirebaseAuth
 
+/**
+ * Define la estructura de navegación principal de la aplicación.
+ */
+
 @Composable
 fun NavigationScreen() {
     val navController = rememberNavController()
     val firebaseAuth = FirebaseAuth.getInstance()
+    // Estado de autenticación del usuario.
     var isUserAuthenticated by remember { mutableStateOf(firebaseAuth.currentUser != null) }
 
+    // Observa cambios en el estado de autenticación de Firebase.
     DisposableEffect(firebaseAuth) {
         val listener = FirebaseAuth.AuthStateListener { auth ->
             val now = auth.currentUser != null
             if (now && !isUserAuthenticated) {
-                navController.popBackStack(navController.graph.startDestinationId, false)
+                // Navega a la pantalla anterior si el usuario se autentica.
+                navController.popBackStack(navController.graph.startDestinationId, false) // Navega a la pantalla anterior
             }
-            isUserAuthenticated = now
+            isUserAuthenticated = now // Actualiza el estado
         }
-        firebaseAuth.addAuthStateListener(listener)
-        onDispose { firebaseAuth.removeAuthStateListener(listener) }
+        firebaseAuth.addAuthStateListener(listener) // Registra el listener
+        onDispose { firebaseAuth.removeAuthStateListener(listener)
+        }
     }
 
     Scaffold(
         topBar = {
+            // Barra superior de la aplicación.
             TopBarMenu(
                 navController = navController,
                 isUserAuthenticated = isUserAuthenticated
             )
         }
     ) { padding ->
+        // Decide qué grafo de navegación usar según el estado de autenticación.
         if (!isUserAuthenticated) {
             AuthNavGraph(
                 navController = navController,
@@ -83,6 +92,9 @@ fun NavigationScreen() {
     }
 }
 
+/**
+ * Define el grafo de navegación para usuarios no autenticados.
+ */
 @Composable
 private fun AuthNavGraph(
     navController: NavHostController,
@@ -92,6 +104,7 @@ private fun AuthNavGraph(
     NavHost(navController, startDestination = "opcionesLogin", modifier = modifier) {
         composable("opcionesLogin") {
             val context = LocalContext.current
+            // Configuración para el inicio de sesión con Google.
             val googleOptions = remember {
                 com.google.android.gms.auth.api.signin.GoogleSignInOptions.Builder(
                     com.google.android.gms.auth.api.signin.GoogleSignInOptions.DEFAULT_SIGN_IN
@@ -105,6 +118,7 @@ private fun AuthNavGraph(
             }
             val progressDialog = remember { ProgressDialog(context) }
 
+            // Lanzador para la actividad de inicio de sesión de Google.
             val launcher = rememberLauncherForActivityResult(
                 ActivityResultContracts.StartActivityForResult()
             ) { result ->
@@ -115,6 +129,7 @@ private fun AuthNavGraph(
                         val account = task.getResult(
                             com.google.android.gms.common.api.ApiException::class.java
                         )
+                        // Autentica la cuenta de Google con Firebase.
                         autenticarCuentaGoogle(
                             idToken        = account.idToken,
                             context        = context,
@@ -130,6 +145,7 @@ private fun AuthNavGraph(
                 }
             }
 
+            // Pantalla de opciones de inicio de sesión.
             OpcionesLoginScreen(
                 onEmailLogin  = { navController.navigate("loginEmail") },
                 onGoogleLogin = { launcher.launch(googleClient.signInIntent) }
@@ -138,20 +154,25 @@ private fun AuthNavGraph(
 
         composable("loginEmail") {
             val vm = remember { LoginEmailViewModel() }
+            // Pantalla de inicio de sesión con email y contraseña.
             LoginEmailScreen(navController = navController, viewModel = vm)
         }
 
         composable("registroEmail") {
             val vm = remember { RegistroEmailViewModel() }
+            // Pantalla de registro con email y contraseña.
             RegistroEmailScreen(navController = navController, viewModel = vm,onBack= { navController.popBackStack("loginEmail", false)})
         }
 
         composable("olvidePassword") {
+            // Pantalla de recuperación de contraseña.
             ForgotPasswordScreen(navController = navController,onSent = { navController.popBackStack() })
         }
     }
 }
-
+/**
+ * Define el grafo de navegación para usuarios autenticados.
+ */
 @Composable
 private fun MainNavGraph(
     navController: NavHostController,
@@ -161,6 +182,7 @@ private fun MainNavGraph(
     NavHost(navController, startDestination = "chatList", modifier = modifier) {
 
         composable("chatList") {
+            // Pantalla principal de la aplicación.
             ChatListScreen(navController = navController, myUid = myUid)
         }
 
@@ -176,6 +198,7 @@ private fun MainNavGraph(
             val chatId   = ChatUtils.generateChatId(myUid, peerId)
             val parts    = chatId.split("_")
             val chatPath = "MensajesIndividuales/${parts[0]}/${parts[1]}"
+            // Pantalla de chat privado.
             ChatScreen(
                 navController  = navController,
                 chatPath       = chatPath,
@@ -194,6 +217,7 @@ private fun MainNavGraph(
         ) { backStack ->
             val groupId   = backStack.arguments!!.getString("groupId")!!
             val groupName = backStack.arguments!!.getString("groupName")!!
+            // Pantalla de chat grupal.
             ChatScreen(
                 navController  = navController,
                 chatPath       = "ChatsGrupales/$groupId",
@@ -211,6 +235,7 @@ private fun MainNavGraph(
             )
         ) { back ->
             val groupId   = back.arguments!!.getString("groupId")!!
+            // Pantalla de administración de grupos.
             AdminGroupScreen(
                 groupId   = groupId,
                 myUid     = myUid,
@@ -220,15 +245,18 @@ private fun MainNavGraph(
 
 
         composable("newChat") {
+            // Pantalla de lista de contactos.
             ContactListScreen(navController = navController)
         }
 
         composable("createGroup") {
+            // Pantalla de creación de grupos.
             CreateGroupScreen(navController = navController, myUid = myUid)
         }
 
         composable("editarInformacion") {
             val vm = remember { EditarInformacionViewModel() }
+            // Pantalla para editar información del usuario.
             EditarInformacionScreen(navController = navController, viewModel = vm)
         }
     }

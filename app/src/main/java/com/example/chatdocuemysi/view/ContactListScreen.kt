@@ -38,17 +38,27 @@ import com.example.chatdocuemysi.model.User
 import com.example.chatdocuemysi.viewmodel.UserListViewModel
 import com.google.firebase.auth.FirebaseAuth
 
+/**
+ * Pantalla que muestra una lista de contactos (usuarios) con quienes el usuario actual puede iniciar chats.
+ * Permite iniciar un chat privado o navegar a la pantalla de creación de grupos.
+ *
+ * @param navController El controlador de navegación para gestionar las transiciones entre pantallas.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContactListScreen(
     navController: NavController
 ) {
+    // Obtiene la instancia del ViewModel para la lista de usuarios.
     val viewModel: UserListViewModel = viewModel()
+    // Recolecta el estado de la lista de usuarios del ViewModel.
     val users by viewModel.users.collectAsState()
+    // Obtiene el UID del usuario actual. Si no está autenticado, la función retorna temprano.
     val myUid = FirebaseAuth.getInstance().uid ?: return
 
     Scaffold(
         floatingActionButton = {
+            // Botón flotante para crear un nuevo grupo.
             FloatingActionButton(onClick = { navController.navigate("createGroup") }) {
                 Icon(Icons.Default.Add, contentDescription = "Nuevo Grupo")
             }
@@ -59,19 +69,20 @@ fun ContactListScreen(
                 .fillMaxSize()
                 .padding(padding),
             contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp) // Espacio entre cada elemento de la lista.
         ) {
+            // Itera sobre la lista de usuarios, filtrando al usuario actual para no listarse a sí mismo.
             items(users.filter { it.uid != myUid }) { user: User ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            // Navegamos al chat privado
-                            val uidEnc = Uri.encode(user.uid)
-                            val nameEnc = Uri.encode(user.nombres)
+                            // Al hacer clic en un usuario, navega a la pantalla de chat privado con ese usuario.
+                            val uidEnc = Uri.encode(user.uid) // Codifica el UID para pasarlo como argumento de navegación.
+                            val nameEnc = Uri.encode(user.nombres) // Codifica el nombre para pasarlo como argumento.
                             navController.navigate("privateChat/$uidEnc/$nameEnc")
                         },
-                    elevation = CardDefaults.cardElevation(4.dp)
+                    elevation = CardDefaults.cardElevation(4.dp) // Añade una ligera sombra a la tarjeta.
                 ) {
                     Row(
                         modifier = Modifier
@@ -79,18 +90,20 @@ fun ContactListScreen(
                             .padding(12.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        // Muestra el nombre del usuario.
                         Text(
                             text = user.nombres,
                             style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f) // Ocupa el espacio disponible.
                         )
+                        // Muestra la imagen de perfil del usuario.
                         Image(
-                            painter = rememberAsyncImagePainter(user.imagen),
+                            painter = rememberAsyncImagePainter(user.imagen), // Carga la imagen de forma asíncrona.
                             contentDescription = "Foto de ${user.nombres}",
                             modifier = Modifier
                                 .size(48.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop
+                                .clip(CircleShape), // Recorta la imagen en forma de círculo.
+                            contentScale = ContentScale.Crop // Escala la imagen para llenar el espacio.
                         )
                     }
                 }
